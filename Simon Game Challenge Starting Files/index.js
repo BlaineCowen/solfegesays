@@ -14,7 +14,7 @@ $(".easy").click(easyGame)
 $(".hard").click(hardGame)
 
 function easyGame(){
-    alert("easy game")
+    
     $(".difficulty").hide()
     $(".btn").show()
 
@@ -124,7 +124,7 @@ function easyGame(){
 
 
 function hardGame(){
-    alert("hard game")
+    
     $(".difficulty").hide()
     $(".btn").show()
 
