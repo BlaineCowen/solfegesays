@@ -1,0 +1,125 @@
+body {
+  text-align: center;
+  background-color: #011F3F;
+}
+
+#level-title {
+  font-family: 'Roboto', 'Medium';
+  font-size: 3rem;
+  margin:  5%;
+  color: #FEF2BF;
+}
+
+#high-score {
+    font-family: 'Roboto', 'Medium';
+    font-size: 3rem;
+    margin:  5%;
+    color: #FEF2BF;
+    display: none;
+}
+
+#restart{
+  font-family: 'Roboto', 'Medium';
+  font-size: 3rem;
+  margin:  5%;
+  color: #FEF2BF;
+  display: none;
+}
+
+.container {
+  display: block;
+  width: 100%;
+  margin: auto;
+
+}
+
+.difficulty {
+  margin: 10px;
+  display: inline-block;
+  height: 200px;
+  width: 200px;
+  border: 10px solid black;
+  border-radius: 20%;
+  font-family: 'Roboto', 'Bold 500';
+  font-size: 2rem;
+  text-align: center;
+  color: azure;
+  cursor: pointer;
+  user-select:none;
+}
+
+.easy {
+  background-color: blue;
+}
+
+.hard {
+  background-color: red;
+}
+
+.btn {
+  margin: 10px;
+  display: inline-block;
+  height: 200px;
+  width: 200px;
+  border: 10px solid black;
+  border-radius: 20%;
+  font-family: 'Roboto', 'Bold 500';
+  font-size: 3rem;
+  text-align: center;
+  color: azure;
+  cursor: pointer;
+  user-select:none;
+}
+
+.sf {
+  color: azure;
+  -webkit-text-stroke: 3px black;
+  cursor: pointer;
+  user-select:none;
+
+}
+
+.game-over {
+  background-color: red;
+  opacity: 0.8;
+}
+
+.Do {
+  background-color: rgb(0, 8, 126);
+}
+
+.Re {
+  background-color: green;
+}
+
+.Mi {
+  background-color: blue;
+}
+
+.Fa {
+  background-color: rgb(255, 0, 191);
+}
+
+.So {
+  background-color: rgb(51, 167, 141);
+}
+
+.La {
+  background-color: red;
+}
+
+.Ti {
+  background-color: yellow;
+}
+
+.highDo {
+  background-color: blueviolet;
+}
+
+
+
+
+.pressed {
+  box-shadow: 0 0 20px white;
+  background-color: grey;
+}
