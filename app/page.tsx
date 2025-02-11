@@ -25,7 +25,8 @@ export default function SimonSolfege() {
   const [currentNote, setCurrentNote] = useState<string | null>(null);
   // const [delay, setDelay] = useState(300);
   const synthRef = useRef<Tone.Synth | null>(null);
-
+  const [isHardMode, setIsHardMode] = useState(false);
+  const [displaySeq, setDisplaySeq] = useState<string[]>([]);
   // Initialize synth once
   useEffect(() => {
     synthRef.current = new Tone.Synth({
@@ -141,6 +142,7 @@ export default function SimonSolfege() {
       const currentIndex = playerSequence.length - 1;
       if (playerSequence[currentIndex] !== sequence[currentIndex]) {
         alert(`Game Over! Your score: ${score}`);
+        setDisplaySeq(sequence);
         setSequence([]);
         setPlayerSequence([]);
         setScore(0);
@@ -154,17 +156,40 @@ export default function SimonSolfege() {
     }
   }, [playerSequence, sequence, score, addToSequence]);
 
+  const playReferenceNote = useCallback(() => {
+    if (!synthRef.current) return;
+    synthRef.current.triggerAttackRelease(NOTE_FREQUENCIES["Do"], "8n");
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-indigo-100 to-purple-100">
       <h1 className="text-5xl font-bold mb-8 text-indigo-600 tracking-wide">
         Simon Solfege
       </h1>
+      <div className="flex gap-4 mb-6">
+        <button
+          onClick={() => setIsHardMode(!isHardMode)}
+          className={`px-4 py-2 rounded-lg shadow-lg transition duration-300 focus:outline-none focus:ring-4 ${
+            isHardMode
+              ? "bg-red-600 hover:bg-red-700 focus:ring-red-400"
+              : "bg-green-600 hover:bg-green-700 focus:ring-green-400"
+          } text-white`}
+        >
+          {isHardMode ? "Hard Mode" : "Easy Mode"}
+        </button>
+        <button
+          onClick={playReferenceNote}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-4 focus:ring-blue-400"
+        >
+          Play Do
+        </button>
+      </div>
       <div className="mb-8">
         <SolfegePad
           notes={NOTES}
           onNoteClick={handleNoteClick}
           isPlaying={isPlaying}
-          currentNote={currentNote}
+          currentNote={isHardMode ? null : currentNote}
         />
       </div>
       <div className="text-3xl font-semibold mb-6 text-indigo-800">
@@ -177,6 +202,11 @@ export default function SimonSolfege() {
         >
           Start Game
         </button>
+      )}
+      {displaySeq.length > 0 && (
+        <div className="text-3xl font-semibold mb-6 text-indigo-800">
+          Correct Sequence: {displaySeq.join(", ")}
+        </div>
       )}
     </div>
   );
