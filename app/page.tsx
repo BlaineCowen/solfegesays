@@ -137,21 +137,22 @@ export default function SimonSolfege() {
   }, [sequence]);
 
   useEffect(() => {
-    if (playerSequence.length && playerSequence.length === sequence.length) {
-      if (playerSequence.every((note, i) => note === sequence[i])) {
+    if (playerSequence.length) {
+      const currentIndex = playerSequence.length - 1;
+      if (playerSequence[currentIndex] !== sequence[currentIndex]) {
+        alert(`Game Over! Your score: ${score}`);
+        setSequence([]);
+        setPlayerSequence([]);
+        setScore(0);
+      } else if (playerSequence.length === sequence.length) {
         setScore((s) => s + 1);
         setPlayerSequence([]);
         setTimeout(() => {
           addToSequence();
         }, 1000);
-      } else {
-        alert(`Game Over! Your score: ${score}`);
-        setSequence([]);
-        setPlayerSequence([]);
-        setScore(0);
       }
     }
-  }, [playerSequence, sequence.length, addToSequence]);
+  }, [playerSequence, sequence, score, addToSequence]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-indigo-100 to-purple-100">
