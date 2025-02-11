@@ -44,12 +44,6 @@ export default function SimonSolfege() {
     };
   }, []);
 
-  // // when score changes, update delay
-  // useEffect(() => {
-  //   // decrease delay on a curve min 10ms
-  //   setDelay(Math.max(300 - score * 25, 10));
-  // }, [score]);
-
   const playNote = useCallback((note: string) => {
     if (!synthRef.current) return;
     setCurrentNote(note);
