@@ -30,11 +30,15 @@ const SolfegePad: React.FC<SolfegePadProps> = ({
   const [activeNote, setActiveNote] = useState<string | null>(null);
 
   useEffect(() => {
+    let timer: NodeJS.Timeout;
     if (currentNote) {
       setActiveNote(currentNote);
-      const timer = setTimeout(() => setActiveNote(null), 200);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => setActiveNote(null), 200);
     }
+    return () => {
+      if (timer) clearTimeout(timer);
+      setActiveNote(null);
+    };
   }, [currentNote]);
 
   return (
@@ -52,10 +56,18 @@ const SolfegePad: React.FC<SolfegePadProps> = ({
             font-bold 
             text-xl 
             shadow-lg 
-            transition-transform 
+            transition-all 
             duration-100
-            ${activeNote === note ? "scale-95 brightness-110" : "scale-100"}
-            ${isPlaying ? "opacity-50 cursor-not-allowed" : "hover:scale-105"}
+            ${
+              activeNote === note
+                ? "scale-95 brightness-150 ring-4 ring-white shadow-xl"
+                : "scale-100 brightness-100"
+            }
+            ${
+              isPlaying
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:scale-105 hover:brightness-110"
+            }
             focus:outline-none 
             active:scale-95
           `}

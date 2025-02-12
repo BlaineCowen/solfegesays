@@ -68,52 +68,51 @@ export default function SimonSolfege() {
     if (!synthRef.current || !sequence.length) return;
     setIsPlaying(true);
 
-    // Cancel any previous events and reset
+    // Clear previous events
     Tone.Transport.cancel();
     Tone.Transport.stop();
     Tone.Transport.position = 0;
 
     await Tone.start();
-    Tone.Transport.bpm.value = Math.max(120 - score * 5, 60);
 
-    let currentIndex = 0;
+    // Create sequence with dynamic speed
     const seq = new Tone.Sequence(
-      (time: number, note: string | null) => {
-        if (!note || !synthRef.current) return;
-
-        // Play the current note
-        synthRef.current.triggerAttackRelease(
+      (time, note) => {
+        synthRef.current?.triggerAttackRelease(
           NOTE_FREQUENCIES[note],
           "8n",
           time
         );
 
-        // Schedule visual feedback
         Tone.Draw.schedule(() => {
           setCurrentNote(note);
-          setTimeout(() => setCurrentNote(null), 200);
+          Tone.Draw.schedule(() => setCurrentNote(null), time + 0.2);
         }, time);
-
-        currentIndex++;
-        // Stop sequence after last note
-        if (currentIndex >= sequence.length) {
-          seq.stop();
-        }
       },
       sequence,
       "4n"
-    ).start("+0.1");
+    );
 
+    // Set playback rate based on score (exponential speed increase)
+    const baseSpeed = 1;
+    const speedMultiplier = 1 + Math.log(score + 1) / 2;
+    seq.playbackRate = Math.min(baseSpeed * speedMultiplier, 2.5);
+    seq.loop = false;
+
+    // Start sequence
+    seq.start(0);
     Tone.Transport.start();
 
-    const noteDuration = (60 / Tone.Transport.bpm.value) * 1000;
+    // Calculate duration
+    const noteDuration = Tone.Time("4n").toSeconds() / seq.playbackRate;
     const totalDuration = sequence.length * noteDuration;
 
+    // Cleanup
     setTimeout(() => {
       seq.dispose();
       Tone.Transport.stop();
       setIsPlaying(false);
-    }, totalDuration + 200);
+    }, totalDuration * 1000 + 200);
   }, [sequence, score]);
 
   const handleNoteClick = useCallback(
